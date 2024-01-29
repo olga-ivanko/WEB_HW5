@@ -37,11 +37,11 @@ class CurExRate:
         return result
 
 
-async def main(days):
+async def get_fx_rates(days):
     network_client = HttpClient()
 
-    if args.days > 10:
-        print(f"{args.days} is more than 10. Try with range up to 10 days")
+    if days > 10:
+        print(f"{days} is more than 10. Try with range up to 10 days")
         return
 
     data = await asyncio.gather(
@@ -70,7 +70,7 @@ async def main(days):
     currency_exchange = CurExRate(exchange_rates_data)
     result = currency_exchange.get_exrates(days)
 
-    pprint(result)
+    return result
 
 
 if __name__ == "__main__":
@@ -79,4 +79,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(args.days))
+    exchange_rates = loop.run_until_complete(get_fx_rates(args.days))
+    pprint(exchange_rates)
+
